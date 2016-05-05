@@ -40,5 +40,6 @@ private:
   list<shared_ptr<SFAsset> > walls;
 
   int fire;
+  int score;
 };
 #endif

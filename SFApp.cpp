@@ -1,6 +1,6 @@
 #include "SFApp.h"
 
-SFApp::SFApp(std::shared_ptr<SFWindow> window) : fire(0), is_running(true), sf_window(window) {
+SFApp::SFApp(std::shared_ptr<SFWindow> window) : fire(0),score(0), is_running(true), sf_window(window) {
   int canvas_w, canvas_h;
   SDL_GetRendererOutputSize(sf_window->getRenderer(), &canvas_w, &canvas_h);
 
@@ -28,7 +28,7 @@ const int number_of_wall = 5;
   }
 
   auto coin = make_shared<SFAsset>(SFASSET_COIN, sf_window);
-  auto pos  = Point2((canvas_w/4), 100);
+  auto pos  = Point2((canvas_w/2), 300);
   coin->SetPosition(pos);
   coins.push_back(coin);
 }
@@ -52,15 +52,35 @@ void SFApp::OnEvent(SFEvent& event) {
     break;
   case SFEVENT_PLAYER_LEFT:
     player->GoWest();
+    for(auto w : walls) {
+    if(player->CollidesWith(w)) {
+        player->GoEast();
+        }
+     }
     break;
   case SFEVENT_PLAYER_RIGHT:
     player->GoEast();
+    for(auto w : walls) {
+    if(player->CollidesWith(w)) {
+        player->GoWest();
+        }
+     }
     break;
 case SFEVENT_PLAYER_UP:
     player->GoNorth();
+    for(auto w : walls) {
+    if(player->CollidesWith(w)) {
+        player->GoSouth();
+        }
+     }
     break;
   case SFEVENT_PLAYER_DOWN:
     player->GoSouth();
+    for(auto w : walls) {
+    if(player->CollidesWith(w)) {
+        player->GoNorth();
+        }
+     }
     break;
   case SFEVENT_FIRE:
     fire ++;
@@ -87,7 +107,7 @@ void SFApp::OnUpdateWorld() {
   }
 
   for(auto c: coins) {
-    c->GoNorth();
+    // do something here
   }
 
   // Update enemy positions
@@ -106,6 +126,8 @@ void SFApp::OnUpdateWorld() {
       if(p->CollidesWith(a)) {
         p->HandleCollision();
         a->HandleCollision();
+        score = score +1;
+        std::wcout<<score<<std::endl;
       }
     }
   }
@@ -117,7 +139,19 @@ void SFApp::OnUpdateWorld() {
       }
     }
   }
-
+  for(auto p : projectiles) {
+    for(auto c : coins) {
+      if(p->CollidesWith(c)) {
+        p->HandleCollision();
+        c->HandleCollision();
+        std::wcout<<"Your Score is: "<<std::endl;
+        std::wcout<<score<<std::endl;
+        is_running = false;
+    break;
+    }
+      }
+  }
+  
   // remove dead aliens (the long way)
   list<shared_ptr<SFAsset>> tmp;
   for(auto a : aliens) {
@@ -127,8 +161,8 @@ void SFApp::OnUpdateWorld() {
   }
   aliens.clear();
   aliens = list<shared_ptr<SFAsset>>(tmp);
-
-// remove dead walls (the long way)
+  
+  //removing walls
   for(auto w : walls) {
     if(w->IsAlive()) {
       tmp.push_back(w);
@@ -153,10 +187,10 @@ void SFApp::OnRender() {
   }
 
   for(auto c: coins) {
-    c->OnRender();
+    if(c->IsAlive()) {c->OnRender();}
   }
 
-	for(auto w: walls) {
+  for(auto w: walls) {
     if(w->IsAlive()) {w->OnRender();}
   }	
   // Switch the off-screen buffer to be on-screen

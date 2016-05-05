@@ -115,14 +115,11 @@ void SFAsset::GoEast() {
 }
 
 void SFAsset::GoNorth() {
-  int w, h;
-  SDL_GetRendererOutputSize(sf_window->getRenderer(), &w, &h);
-
+  
   Vector2 c = *(bbox->centre) + Vector2(0.0f, 5.0f); 
-  if(!(c.getY() < h)) {
+  
   bbox->centre.reset();
   bbox->centre = make_shared<Vector2>(c);
- }
 }
 
 void SFAsset::GoSouth() {
@@ -150,7 +147,7 @@ bool SFAsset::IsAlive() {
 }
 
 void SFAsset::HandleCollision() {
-  if(SFASSET_PROJECTILE == type || SFASSET_ALIEN == type || SFASSET_PLAYER == type) {
+  if(SFASSET_PROJECTILE == type || SFASSET_ALIEN == type || SFASSET_ALIEN == type || SFASSET_PLAYER == type) {
     SetNotAlive();
   }
 }
