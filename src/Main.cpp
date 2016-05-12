@@ -59,7 +59,6 @@ SFError InitGraphics() {
 
 int main(int arc, char ** argv) {
   shared_ptr<SFApp> sfapp = nullptr;
-
   // Initialise graphics context
   try {
     InitGraphics();
