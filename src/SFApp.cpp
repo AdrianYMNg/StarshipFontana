@@ -161,15 +161,24 @@ void SFApp::OnUpdateWorld() {
   }
   aliens.clear();
   aliens = list<shared_ptr<SFAsset>>(tmp);
-  
-  //removing walls
-  for(auto w : walls) {
-    if(w->IsAlive()) {
-      tmp.push_back(w);
+
+  list<shared_ptr<SFAsset>> tmp1;
+  for(auto c : coins) {
+    if(c->IsAlive()) {
+      tmp1.push_back(c);
     }
   }
-  walls.clear();
-  walls = list<shared_ptr<SFAsset>>(tmp);
+  coins.clear();
+  coins = list<shared_ptr<SFAsset>>(tmp1);
+  
+   list<shared_ptr<SFAsset>> tmp2;
+  for(auto p : projectiles) {
+    if(p->IsAlive()) {
+      tmp2.push_back(p);
+    }
+  }
+  projectiles.clear();
+  projectiles = list<shared_ptr<SFAsset>>(tmp2);
 }
 
 void SFApp::OnRender() {
