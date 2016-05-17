@@ -29,6 +29,20 @@ top-level directory.  To execute this file do the following
 from the top-level directory.  The game will expect to find the
 `assets` directory under its current working directory.
 
+## Documentation ##
+
+What have been done? 
+•	Border have made so the character doesn’t go out of the screen
+•	The character correctly moves as the movement key is pressed
+•	Enemies and walls are placed centre of the screen
+•	Enemies die after getting shot by the character
+•	Enemies correctly log scores after getting killed
+•	Walls prevent movement of the character
+•	Walls correctly prevent bullets going through
+•	Collision detection functions properly
+•	Game ends and exits at collecting the coin by shooting at it
+•	Game logs final score after game end
+
 ## Credits ##
 The sprites in this game come directly from 
 [SpriteLib](http://www.widgetworx.com/widgetworx/portfolio/spritelib.html) and are used
